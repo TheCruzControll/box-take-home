@@ -1,3 +1,6 @@
+package game;
+
+import piece.Piece;
 import utils.Direction;
 
 /**
@@ -11,8 +14,11 @@ public class Board {
 
 
     public Board() {
-    	//TODO initialize variable board here
+    	board = new Piece[BOARD_SIZE][BOARD_SIZE];
+    }
 
+    public int getBoardSize(){
+        return BOARD_SIZE;
     }
 
     public int getPromoteRow(Direction direction) {
@@ -31,9 +37,11 @@ public class Board {
         return stringifyBoard(pieces);
     }
 
-    private boolean isOccupied(int col, int row) {
-        return board[col][row] != null;
+    public boolean isOccupied(int row, int col) {
+        return board[row][col] != null;
     }
+
+    public Piece getPiece(int row, int col){return board[row][col];}
 
     private String stringifyBoard(String[][] board) {
         String str = "";

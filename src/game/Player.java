@@ -1,3 +1,6 @@
+package game;
+
+import piece.Piece;
 import utils.Direction;
 import java.util.*;
 
