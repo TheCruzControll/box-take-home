@@ -1,9 +1,28 @@
 package utils;
 
+import game.Board;
+import piece.Piece;
+
 import java.io.*;
 import java.util.*;
 
 public class Utils {
+
+    static String indexToAddress(int row, int col, Board board){
+        char r = (char)(((int)'a') + col);
+        int c = board.getBoardSize() - row;
+        return r + String.valueOf(c);
+    }
+
+    public static String moveToString(int startRow, int endRow, int startCol, int endCol, Board board){
+        String from = indexToAddress(startRow, startCol, board);
+        String to = indexToAddress(endRow, endCol, board);
+        return "move " + from + " " + to;
+    }
+
+    public static String dropToString(Piece piece, int endRow, int endCol, Board board){
+        return "drop " + Character.toLowerCase(piece.getSymbol()) + " " + indexToAddress(endRow, endCol, board);
+    }
 
     static class InitialPosition {
         String piece;

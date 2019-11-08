@@ -4,6 +4,7 @@ import piece.BoxDrive;
 import piece.Piece;
 import utils.Coordinate;
 import utils.Direction;
+import utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,8 +23,8 @@ public class Board {
 
 
     public Board() {
-    	board = new Piece[BOARD_SIZE][BOARD_SIZE];
-    	driveLocations = new HashMap<>();
+    	this.board = new Piece[BOARD_SIZE][BOARD_SIZE];
+    	this.driveLocations = new HashMap<>();
     }
 
     public int getBoardSize(){
@@ -70,12 +71,12 @@ public class Board {
      */
     public boolean isCheckMate(Player currentPlayer){
         if(!isInCheck(currentPlayer))return false;
-        ArrayList<Coordinate> strats = unCheckPossibilities(currentPlayer);
+        ArrayList<String> strats = unCheckPossibilities(currentPlayer);
         return strats.isEmpty();
     }
 
-    private ArrayList<Coordinate> unCheckPossibilities(Player currentPlayer){
-        List<Coordinate> strats = new ArrayList<>();
+    private ArrayList<String> unCheckPossibilities(Player currentPlayer){
+        ArrayList<String> strats = new ArrayList<>();
         //Try every move of each piece the currentPlayer has
         for(int row = 0; row < getBoardSize(); row++){
             for(int col = 0; col < getBoardSize(); col++){
@@ -83,7 +84,7 @@ public class Board {
                 if(isOccupied(row, col) && piece.getPlayer() == currentPlayer){
                     for(Coordinate move : piece.validMoves(row, col, this)){
                         if(moveUncheck(row, col, move.getRow(), move.getCol(), currentPlayer)){
-                            strats.add(move);
+                            strats.add(Utils.moveToString(row, move.getRow(), col, move.getCol(), this));
                         }
                     }
                 }
@@ -95,12 +96,12 @@ public class Board {
             for(int row = 0; row < getBoardSize(); row++){
                 for(int col = 0; col < getBoardSize(); col++){
                     if(dropUncheck(piece, row, col, currentPlayer)){
-                        strats.add(new Coordinate(row, col));
+                        strats.add(Utils.dropToString(piece, row, col, this));
                     }
                 }
             }
         }
-
+        return strats;
     }
 
 

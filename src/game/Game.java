@@ -1,36 +1,49 @@
 package game;
 import piece.*;
 
-public class Game {
-    private int numTurns;
-    private boolean gameOver;
-    //false for lower, true for UPPER
-    private boolean currentPlayer;
-    private Player upper;
-    private Player lower;
-    private Board board;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
-    public void newGame(){
+public abstract class Game {
+    protected static final int moveLimit = 200;
+    protected int numTurns;
+    protected boolean gameOver;
+    //false for lower, true for UPPER
+    protected Queue<Player> playerQueue;
+    protected Player currentPlayer;
+    protected Player upper;
+    protected Player lower;
+    protected Board board;
+//    private GameHelper helper;
+
+    public Game(){
         this.numTurns = 0;
         this.gameOver = false;
-        this.currentPlayer = false;
+        playerQueue = new LinkedList<>();
         this.upper = new Player(true);
         this.lower = new Player(false);
+        playerQueue.add(lower);
+        playerQueue.add(upper);
         this.board = new Board();
-        board.placePiece(new BoxNotes(upper), 0,0);
-        board.placePiece(new BoxGovernance(upper), 0, 1);
-        board.placePiece(new BoxRelay(upper), 0, 2);
-        board.placePiece(new BoxShield(upper), 0, 3);
-        board.placePiece(new BoxDrive(upper), 0, 4);
-        board.placePiece(new BoxPreview(upper), 1, 4);
+    }
 
-        board.placePiece(new BoxNotes(lower), 4,4);
-        board.placePiece(new BoxGovernance(lower), 4, 3);
-        board.placePiece(new BoxRelay(lower), 4, 2);
-        board.placePiece(new BoxShield(lower), 4, 1);
-        board.placePiece(new BoxDrive(lower), 4, 0);
-        board.placePiece(new BoxPreview(lower), 3, 0);
+//    public Game(GameHelper helper){
+//        this.helper = helper;
+//        newGame();
+//    }
 
+    abstract void nextTurn();
 
+    abstract void move(String from, String to, boolean promote);
+
+    abstract void drop(char piece, String addr);
+
+    abstract void getGameState();
+
+    abstract void getResult(boolean isLegal, boolean isCheck, List<String> strategies);
+
+    public boolean isGameOver(){
+        return gameOver;
     }
 }
