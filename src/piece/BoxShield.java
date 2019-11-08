@@ -23,7 +23,7 @@ public class BoxShield extends Piece {
 
     @Override
     protected boolean isInMoveRange(int startRow, int endRow, int startCol, int endCol, Board board) {
-        return MoveChecker.BoxShield(startRow, endRow, startCol, endCol, direction, board);
+        return MoveChecker.BoxShield(startRow, endRow, startCol, endCol, direction);
     }
 
     @Override

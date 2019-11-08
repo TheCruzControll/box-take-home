@@ -51,7 +51,7 @@ public class MoveChecker {
         return true;
     }
 
-    public static boolean BoxShield(int startRow, int endRow, int startCol, int endCol, Direction direction, Board board){
+    public static boolean BoxShield(int startRow, int endRow, int startCol, int endCol, Direction direction){
         int rowChange = endRow - startRow;
         int colChange = endCol - startCol;
 
@@ -64,7 +64,7 @@ public class MoveChecker {
         }
     }
 
-    public static boolean BoxRelay(int startRow, int endRow, int startCol, int endCol, Direction direction, Board board){
+    public static boolean BoxRelay(int startRow, int endRow, int startCol, int endCol, Direction direction){
         int rowChange = endRow - startRow;
         int colChange = endCol - startCol;
 
@@ -75,6 +75,14 @@ public class MoveChecker {
             return (rowChange == -1 && colChange == 0);
         }else{
             return (rowChange == 1 && colChange == 0);
+        }
+    }
+
+    public static boolean BoxPreview(int startRow, int endRow, int startCol, int endCol, Direction direction){
+        if(direction == Direction.DOWN){
+            return ((endRow - startRow) == -1 && (endCol - startCol) == 0);
+        }else{
+            return ((endRow - startRow) == 1 && (endCol - startCol) == 0);
         }
     }
 }

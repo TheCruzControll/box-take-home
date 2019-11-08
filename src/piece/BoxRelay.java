@@ -25,10 +25,10 @@ public class BoxRelay extends Piece{
     @Override
     protected boolean isInMoveRange(int startRow, int endRow, int startCol, int endCol, Board board) {
         if(promoted){
-            return MoveChecker.BoxShield(startRow, endRow, startCol, endCol, direction, board) ||
-                    MoveChecker.BoxRelay(startRow, endRow, startCol, endCol, direction, board);
+            return MoveChecker.BoxShield(startRow, endRow, startCol, endCol, direction) ||
+                    MoveChecker.BoxRelay(startRow, endRow, startCol, endCol, direction);
         }else{
-            return MoveChecker.BoxRelay(startRow, endRow, startCol, endCol, direction, board);
+            return MoveChecker.BoxRelay(startRow, endRow, startCol, endCol, direction);
         }
     }
 
