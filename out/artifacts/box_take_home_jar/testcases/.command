@@ -1,1 +1,0 @@
-java -jar box-take-home.jar -f
