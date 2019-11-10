@@ -60,10 +60,15 @@ public class FileHelper implements GameHelper {
     }
 
     @Override
-    public void dropMade(Player player, Piece piece, String address) {
+    public void dropMade(Player player, String piece, String address) {
         if (currentMove == moves || game.isGameOver()) {
-            System.out.println(player.getName() + " player action: drop " + piece.toString() + " " + address);
+            System.out.println(player.getName() + " player action: drop " + piece.toLowerCase() + " " + address);
         }
+    }
+
+
+    public void dropMadeFail(Player player, char piece, String address){
+        System.out.println(player.getName() + " player action: drop " + Character.toLowerCase(piece) + " " + address);
     }
 
     @Override
@@ -80,12 +85,12 @@ public class FileHelper implements GameHelper {
 
     @Override
     public void checkMate(Player player) {
-        System.out.println(player + " player wins. Checkmate");
+        System.out.println(player.getName() + " player wins.  Checkmate.");
     }
 
     @Override
     public void tie() {
-        System.out.println("Tie game. Too many moves.");
+        System.out.println("Tie game.  Too many moves.");
     }
 
     @Override
@@ -98,7 +103,7 @@ public class FileHelper implements GameHelper {
 
     @Override
     public void illegalMove(Player player){
-        System.out.println(player.getName() + " player wins. Illegal Move");
+        System.out.println(player.getName() + " player wins.  Illegal move.");
     }
 
 }

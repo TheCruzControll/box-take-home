@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Queue;
 
 public abstract class Game {
-    protected static final int moveLimit = 200;
+    protected static final int moveLimit = 400;
     protected int numTurns;
     protected boolean gameOver;
     protected Queue<Player> playerQueue;

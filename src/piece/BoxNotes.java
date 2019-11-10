@@ -33,6 +33,6 @@ public class BoxNotes extends Piece{
 
     @Override
     public boolean isLegalDrop(int row, int col, Board board) {
-        return board.isOccupied(row, col);
+        return !board.isOccupied(row, col);
     }
 }

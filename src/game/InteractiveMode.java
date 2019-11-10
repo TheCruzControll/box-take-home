@@ -103,7 +103,7 @@ public class InteractiveMode extends Game {
         }else{
             gameOver = true;
         }
-        helper.dropMade(currentPlayer, currPiece, addr);
+        helper.dropMade(currentPlayer, currPiece.toString(), addr);
         getGameState();
         getResult(isLegal, isInCheck, strategies);
         nextTurn();

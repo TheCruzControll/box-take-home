@@ -25,8 +25,7 @@ public class BoxRelay extends Piece{
     @Override
     protected boolean isInMoveRange(int startRow, int endRow, int startCol, int endCol, Board board) {
         if(promoted){
-            return MoveChecker.BoxShield(startRow, endRow, startCol, endCol, direction) ||
-                    MoveChecker.BoxRelay(startRow, endRow, startCol, endCol, direction);
+            return MoveChecker.BoxShield(startRow, endRow, startCol, endCol, direction);
         }else{
             return MoveChecker.BoxRelay(startRow, endRow, startCol, endCol, direction);
         }
@@ -34,6 +33,6 @@ public class BoxRelay extends Piece{
 
     @Override
     public boolean isLegalDrop(int row, int col, Board board) {
-        return board.isOccupied(row, col);
+        return !board.isOccupied(row, col);
     }
 }

@@ -48,7 +48,7 @@ public class BoxPreview extends Piece{
         int index = player.getPieceIndex(getSymbol());
         Piece p = player.getPiece(getSymbol());
         board.placePiece(this, row, col);
-        boolean checkMate = board.isCheckMate(player);
+        boolean checkMate = board.isCheckMate(opponent);
         board.removePiece(row, col);
         if (p != null) player.addCapturedPiece(p, index);
         return !checkMate;

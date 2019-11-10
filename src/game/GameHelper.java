@@ -18,7 +18,7 @@ public interface GameHelper {
 
     void moveMade(Player player, String from, String to, boolean promote);
 
-    void dropMade(Player player, Piece piece, String address);
+    void dropMade(Player player, String piece, String address);
 
     void inCheck(Player player, List<String> strats);
 

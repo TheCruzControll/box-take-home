@@ -49,8 +49,8 @@ public class InteractiveHelper implements GameHelper{
     }
 
     @Override
-    public void dropMade(Player player, Piece piece, String address) {
-        System.out.println(player.getName() + " player action: drop " + piece.toString() + " " + address);
+    public void dropMade(Player player, String piece, String address) {
+        System.out.println(player.getName() + " player action: drop " + piece + " " + address);
 
     }
 

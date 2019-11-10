@@ -21,6 +21,7 @@ public class FileMode extends Game {
             board.placePiece(piece, coordinate.getRow(), coordinate.getCol());
         }
         for(String symbol : upperCaptures){
+            if(symbol.equals(""))continue;
             Piece piece = PieceFactory.makePiece(symbol, upper, lower);
             upper.addCapturedPiece(piece);
         }
@@ -102,7 +103,12 @@ public class FileMode extends Game {
         }else{
             gameOver = true;
         }
-        helper.dropMade(currentPlayer, currPiece, addr);
+
+        if(currPiece == null){
+            helper.dropMade(currentPlayer, piece+"", addr);
+        }else{
+            helper.dropMade(currentPlayer, currPiece.toString(), addr);
+        }
         getGameState();
         getResult(isLegal, isInCheck, strategies);
         nextTurn();

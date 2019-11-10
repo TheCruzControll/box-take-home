@@ -1,6 +1,7 @@
 package game;
 
 import piece.BoxDrive;
+import piece.BoxPreview;
 import piece.Piece;
 import utils.Coordinate;
 import utils.Direction;
@@ -96,7 +97,8 @@ public class Board {
         for(Piece piece : captured){
             for(int row = 0; row < getBoardSize(); row++){
                 for(int col = 0; col < getBoardSize(); col++){
-                    if(dropUncheck(piece, row, col, currentPlayer)){
+                    boolean uncheck = dropUncheck(piece, row, col, currentPlayer);
+                    if(uncheck){
                         strats.add(Utils.dropToString(piece, row, col, this));
                     }
                 }
@@ -128,7 +130,7 @@ public class Board {
     }
 
     private boolean dropUncheck(Piece piece, int row, int col, Player currentPlayer){
-        if(isOccupied(row,col));
+        if(isOccupied(row,col))return false;
         if(!piece.isLegalDrop(row, col, this))return false;
         placePiece(piece, row, col);
         boolean isInCheck = isInCheck(currentPlayer);
@@ -156,7 +158,7 @@ public class Board {
         Piece endPiece = getPiece(endRow, endCol);
         removePiece(startRow,startCol);
         placePiece(piece,endRow,endCol);
-
+        if (piece instanceof BoxPreview) piece.promote(startRow, endRow, this);
         if(isInCheck(currentPlayer)){
             removePiece(endRow,endCol);
             placePiece(piece, startRow, startCol);
@@ -175,7 +177,8 @@ public class Board {
         Coordinate toCoordinate = Utils.addressToIndex(to, this);
         int row = toCoordinate.getRow();
         int col = toCoordinate.getCol();
-        if(getPiece(row, col) != null || !piece.isLegalDrop(row, col, this))return false;
+        if(getPiece(row, col) != null)return false;
+        if(!piece.isLegalDrop(row, col, this))return false;
         placePiece(piece, row, col);
         return true;
     }
