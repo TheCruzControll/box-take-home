@@ -8,6 +8,7 @@ import java.util.*;
 
 public class Utils {
 
+
     static String indexToAddress(int row, int col, Board board){
         char r = (char)(((int)'a') + col);
         int c = board.getBoardSize() - row;

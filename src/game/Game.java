@@ -35,9 +35,9 @@ public abstract class Game {
 
     abstract void nextTurn();
 
-    abstract void move(String from, String to, boolean promote);
+    abstract boolean move(String from, String to, boolean promote);
 
-    abstract void drop(char piece, String addr);
+    abstract boolean drop(char piece, String addr);
 
     abstract void getGameState();
 

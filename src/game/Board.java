@@ -105,6 +105,7 @@ public class Board {
     }
 
 
+
     private boolean moveUncheck(int startRow, int endRow, int startCol, int endCol, Player currentPlayer){
         Piece piece = getPiece(startRow, startCol);
         //only gets called when there's a piece so no need to check for null piece
@@ -136,6 +137,12 @@ public class Board {
     public void placePiece(Piece piece, int row, int col){
         if(piece instanceof BoxDrive) updateDriveLocations(piece, row, col);
         board[row][col] = piece;
+    }
+
+    public static boolean move(String from, String to, boolean promote, Player currentPlayer){
+        String addressPattern = "[a-e][1-5]";
+        if(!from.matches(addressPattern) || !to.matches(addressPattern))return false;
+        if(!isValidMove())
     }
 
     public void removePiece(int row, int col){

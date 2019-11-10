@@ -1,4 +1,7 @@
 # Box Take Home
+##Take Aways
+ - Push smaller commits more often to better document progress. 
+ 
 ## Game Design
 
 ### Board.java
