@@ -10,6 +10,10 @@ public class BoxShield extends Piece {
         super(symbol, player);
     }
 
+    @Override
+    public void promote(){
+        promoted = false;
+    }
 
     @Override
     public boolean promote(int startRow, int endRow, Board board) {

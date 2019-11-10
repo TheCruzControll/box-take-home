@@ -11,6 +11,11 @@ public class BoxDrive extends Piece{
     }
 
     @Override
+    public void promote(){
+        promoted = false;
+    }
+
+    @Override
     public boolean promote(int startRow, int endRow, Board board) {
         return false;
     }

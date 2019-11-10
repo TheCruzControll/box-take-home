@@ -2,6 +2,7 @@ package game;
 
 import piece.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InteractiveMode extends Game {
@@ -27,7 +28,8 @@ public class InteractiveMode extends Game {
         board.placePiece(new BoxShield(lower), 4, 1);
         board.placePiece(new BoxDrive(lower), 4, 0);
         board.placePiece(new BoxPreview(lower), 3, 0);
-        helper.boardState(board.toString());
+
+        getGameState();
         nextTurn();
     }
 
@@ -48,10 +50,18 @@ public class InteractiveMode extends Game {
     @Override
     boolean move(String from, String to, boolean promote) {
         if(gameOver) return false;
+        List<String> strategies = new ArrayList<>();
         boolean isLegalMove = board.move(from, to, promote, currentPlayer);
         boolean isInCheck = false;
+        Player opponent = board.getOpponent(currentPlayer);
         if(isLegalMove){
-
+            if(board.isInCheck(opponent)){
+                isInCheck = true;
+                strategies = board.unCheckPossibilities(opponent);
+                if(strategies.size() == 0){
+                    gameOver = true;
+                }
+            }
         }else{
             gameOver = true;
         }
@@ -65,7 +75,39 @@ public class InteractiveMode extends Game {
 
     @Override
     boolean drop(char piece, String addr) {
+        if(gameOver)return false;
+        int index = currentPlayer.getPieceIndex(piece);
+        Piece currPiece = currentPlayer.getPiece(piece);
+        boolean isLegal;
+        if(currPiece == null){
+            gameOver = true;
+            isLegal = false;
+        }else{
+            isLegal = board.drop(currPiece, addr, currentPlayer);
+        }
+        if(!isLegal && currPiece != null){
+            currentPlayer.addCapturedPiece(currPiece, index);
+        }
 
+        List<String> strategies = new ArrayList<>();
+        boolean isInCheck = false;
+        Player opponent = board.getOpponent(currentPlayer);
+        if(isLegal){
+            if(board.isInCheck(opponent)){
+                isInCheck = true;
+                strategies = board.unCheckPossibilities(opponent);
+                if(strategies.size() == 0){
+                    gameOver = true;
+                }
+            }
+        }else{
+            gameOver = true;
+        }
+        helper.dropMade(currentPlayer, currPiece, addr);
+        getGameState();
+        getResult(isLegal, isInCheck, strategies);
+        nextTurn();
+        return isLegal;
     }
 
     @Override
@@ -77,6 +119,15 @@ public class InteractiveMode extends Game {
 
     @Override
     void getResult(boolean isLegal, boolean isCheck, List<String> strategies) {
-
+        Player opponent = getOpponent();
+        if(isLegal){
+            if(isCheck && !gameOver){
+                helper.inCheck(opponent, strategies);
+            }else if(isCheck && gameOver){
+                helper.checkMate(currentPlayer);
+            }
+        }else{
+            helper.illegalMove(opponent);
+        }
     }
 }

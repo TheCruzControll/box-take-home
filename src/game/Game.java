@@ -9,7 +9,6 @@ public abstract class Game {
     protected static final int moveLimit = 200;
     protected int numTurns;
     protected boolean gameOver;
-    //false for lower, true for UPPER
     protected Queue<Player> playerQueue;
     protected Player currentPlayer;
     protected Player upper;
@@ -28,10 +27,6 @@ public abstract class Game {
         this.board = new Board();
     }
 
-//    public Game(GameHelper helper){
-//        this.helper = helper;
-//        newGame();
-//    }
 
     abstract void nextTurn();
 
@@ -45,5 +40,9 @@ public abstract class Game {
 
     public boolean isGameOver(){
         return gameOver;
+    }
+
+    public Player getOpponent(){
+        return playerQueue.peek();
     }
 }

@@ -76,7 +76,7 @@ public class InteractiveHelper implements GameHelper{
 
     @Override
     public void getTurn(Player player){
-        System.out.println(player.toString() + "> ");
+        System.out.print(player.getName() + "> ");
     }
 
     @Override

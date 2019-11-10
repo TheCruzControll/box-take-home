@@ -58,9 +58,9 @@ public class MoveChecker {
         if(rowChange == 0 && Math.abs(colChange) == 1)return true;
         else if(colChange == 0 && Math.abs(rowChange) == 1)return true;
         else if(direction == Direction.DOWN){
-            return (rowChange == -1 && Math.abs(colChange) == 1);
-        }else{
             return (rowChange == 1 && Math.abs(colChange) == 1);
+        }else{
+            return (rowChange == -1 && Math.abs(colChange) == 1);
         }
     }
 
@@ -72,17 +72,17 @@ public class MoveChecker {
         //if it goes in any diagonal return true;
         if(Math.abs(rowChange) == 1 && Math.abs(colChange) == 1)return true;
         else if(direction == Direction.DOWN){
-            return (rowChange == -1 && colChange == 0);
-        }else{
             return (rowChange == 1 && colChange == 0);
+        }else{
+            return (rowChange == -1 && colChange == 0);
         }
     }
 
     public static boolean BoxPreview(int startRow, int endRow, int startCol, int endCol, Direction direction){
         if(direction == Direction.DOWN){
-            return ((endRow - startRow) == -1 && (endCol - startCol) == 0);
-        }else{
             return ((endRow - startRow) == 1 && (endCol - startCol) == 0);
+        }else{
+            return ((endRow - startRow) == -1 && (endCol - startCol) == 0);
         }
     }
 }

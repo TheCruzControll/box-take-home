@@ -44,6 +44,10 @@ public abstract class Piece {
         return (startRow == board.getPromoteRow(direction) || endRow == board.getPromoteRow(direction));
     }
 
+    public void promote(){
+        promoted = true;
+    }
+
     public boolean isValidMove(int startRow, int endRow, int startCol, int endCol, Board board){
         if(startRow == endRow && startCol == endCol)return false;
         Piece piece = board.getPiece(endRow, endCol);

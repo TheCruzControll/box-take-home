@@ -18,7 +18,7 @@ public class Board {
     private static final int BOARD_SIZE = 5;
     private static final int UPPER_PROMOTION_ROW = 0;
     private static final int LOWER_PROMOTION_ROW = BOARD_SIZE-1;
-    private static final Map<Player, Coordinate> driveLocations;
+    private final Map<Player, Coordinate> driveLocations;
     private Piece[][] board;
 
 
@@ -75,7 +75,7 @@ public class Board {
         return strats.isEmpty();
     }
 
-    private ArrayList<String> unCheckPossibilities(Player currentPlayer){
+    public ArrayList<String> unCheckPossibilities(Player currentPlayer){
         ArrayList<String> strats = new ArrayList<>();
         //Try every move of each piece the currentPlayer has
         for(int row = 0; row < getBoardSize(); row++){
@@ -139,10 +139,55 @@ public class Board {
         board[row][col] = piece;
     }
 
-    public static boolean move(String from, String to, boolean promote, Player currentPlayer){
+    public boolean move(String from, String to, boolean promote, Player currentPlayer){
         String addressPattern = "[a-e][1-5]";
         if(!from.matches(addressPattern) || !to.matches(addressPattern))return false;
-        if(!isValidMove())
+        Coordinate fromCoordinate = Utils.addressToIndex(from, this);
+        Coordinate toCoordinate = Utils.addressToIndex(to, this);
+        int startRow = fromCoordinate.getRow();
+        int startCol = fromCoordinate.getCol();
+        int endRow = toCoordinate.getRow();
+        int endCol = toCoordinate.getCol();
+
+        if(!isValidMove(startRow, endRow, startCol, endCol, promote, currentPlayer))return false;
+        Piece piece = getPiece(startRow, startCol);
+        Piece endPiece = getPiece(endRow, endCol);
+        removePiece(startRow,startCol);
+        placePiece(piece,endRow,endCol);
+
+        if(isInCheck(currentPlayer)){
+            removePiece(endRow,endCol);
+            placePiece(piece, startRow, startCol);
+            return false;
+        }
+        if(endPiece != null){
+            endPiece.capture(currentPlayer);
+            currentPlayer.addCapturedPiece(endPiece);
+        }
+        return true;
+    }
+
+    public boolean drop(Piece piece, String to, Player currentPlayer){
+        String addressPattern = "[a-e][1-5]";
+        if(!to.matches(addressPattern))return false;
+        Coordinate toCoordinate = Utils.addressToIndex(to, this);
+        int row = toCoordinate.getRow();
+        int col = toCoordinate.getCol();
+        if(getPiece(row, col) != null || !piece.isLegalDrop(row, col, this))return false;
+        placePiece(piece, row, col);
+        return true;
+    }
+
+    private boolean isValidMove(int startRow, int endRow, int startCol, int endCol, boolean promote, Player currentPlayer){
+        Piece piece = getPiece(startRow, startCol);
+        if(piece == null || piece.getPlayer() != currentPlayer || !piece.isValidMove(startRow , endRow, startCol, endCol, this))return false;
+        if(promote){
+            if(!piece.promote(startRow, endRow, this))return false;
+        }
+
+        Piece endPiece = getPiece(endRow, endCol);
+        if(endPiece != null && endPiece.getPlayer() == currentPlayer)return false;
+        return true;
     }
 
     public void removePiece(int row, int col){
@@ -187,11 +232,11 @@ public class Board {
     private String stringifyBoard(String[][] board) {
         String str = "";
 
-        for (int row = board.length - 1; row >= 0; row--) {
+        for (int row = 0; row < board.length; row++) {
 
-            str += Integer.toString(row + 1) + " |";
+            str += Integer.toString(board.length - row ) + " |";
             for (int col = 0; col < board[row].length; col++) {
-                str += stringifySquare(board[col][row]);
+                str += stringifySquare(board[row][col]);
             }
             str += System.getProperty("line.separator");
         }

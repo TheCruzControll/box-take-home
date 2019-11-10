@@ -28,6 +28,39 @@ public class Player {
         else return Character.toLowerCase(originalSymbol);
     }
 
+    public void addCapturedPiece(Piece piece){
+        capturedPieces.add(piece);
+    }
+
+    public void addCapturedPiece(Piece piece, int index){
+        if (index < capturedPieces.size()) {
+            capturedPieces.add(index, piece);
+        }
+        else {
+            capturedPieces.add(piece);
+        }
+    }
+
+    public int getPieceIndex(char c){
+        for(int i = 0; i < capturedPieces.size(); i++){
+            Piece currPiece = capturedPieces.get(i);
+            if(Character.toLowerCase(currPiece.getSymbol()) == c){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public Piece getPiece(char c){
+        for(Piece piece : capturedPieces){
+            if(Character.toLowerCase(piece.getSymbol()) == c){
+                capturedPieces.remove(piece);
+                return piece;
+            }
+        }
+        return null;
+    }
+
     public static String getName() {
         return name;
     }

@@ -8,8 +8,14 @@ import java.util.*;
 
 public class Utils {
 
+    public static Coordinate addressToIndex(String address, Board board){
+        int row = Integer.valueOf(address.substring(1,2));
+        char col = address.charAt(0);
+        Coordinate index = new Coordinate(board.getBoardSize() - row, (int)col - (int)'a');
+        return index;
+    }
 
-    static String indexToAddress(int row, int col, Board board){
+    public static String indexToAddress(int row, int col, Board board){
         char r = (char)(((int)'a') + col);
         int c = board.getBoardSize() - row;
         return r + String.valueOf(c);
@@ -25,9 +31,9 @@ public class Utils {
         return "drop " + Character.toLowerCase(piece.getSymbol()) + " " + indexToAddress(endRow, endCol, board);
     }
 
-    static class InitialPosition {
-        String piece;
-        String position;
+    public static class InitialPosition {
+        public String piece;
+        public String position;
 
         public InitialPosition(String pc, String pos) {
             piece = pc;
@@ -39,12 +45,12 @@ public class Utils {
         }
     }
 
-    static class TestCase {
+    public static class TestCase {
 
-        List<InitialPosition> initialPieces;
-        List<String> upperCaptures;
-        List<String> lowerCaptures;
-        List<String> moves;
+        public List<InitialPosition> initialPieces;
+        public List<String> upperCaptures;
+        public List<String> lowerCaptures;
+        public List<String> moves;
 
         public TestCase(List<InitialPosition> ip, List<String> uc, List<String> lc, List<String> m) {
             initialPieces = ip;
@@ -90,6 +96,9 @@ public class Utils {
         List<InitialPosition> initialPieces = new ArrayList<InitialPosition>();
         while (!line.equals("")) {
             String[] lineParts = line.split(" ");
+            if(lineParts[0] == " "){
+                continue;
+            }
             initialPieces.add(new InitialPosition(lineParts[0], lineParts[1]));
             line = br.readLine().trim();
         }
