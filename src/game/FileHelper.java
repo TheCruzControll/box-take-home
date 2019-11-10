@@ -16,14 +16,14 @@ public class FileHelper implements GameHelper {
 
     @Override
     public void boardState(String board) {
-        if (currentMove == moves - 1 || game.isGameOver()) {
+        if (currentMove == moves || game.isGameOver()) {
             System.out.println(board);
         }
     }
 
     @Override
     public void upperCaptured(Player player) {
-        if (currentMove == moves - 1 || game.isGameOver()) {
+        if (currentMove == moves || game.isGameOver()) {
             System.out.print("Captures UPPER: ");
             StringBuilder pieces = new StringBuilder();
 
@@ -36,19 +36,20 @@ public class FileHelper implements GameHelper {
 
     @Override
     public void lowerCaptured(Player player) {
-        if (currentMove == moves - 1 || game.isGameOver()) {
+        if (currentMove == moves || game.isGameOver()) {
             System.out.print("Captures lower: ");
             StringBuilder pieces = new StringBuilder();
             for (Piece piece : player.getCapturedPieces()) {
                 pieces.append(" " + piece.toString());
             }
             System.out.println(pieces.toString().trim());
+            System.out.println();
         }
     }
 
     @Override
     public void moveMade(Player player, String from, String to, boolean promote) {
-        if (currentMove == moves - 1 || game.isGameOver()) {
+        if (currentMove == moves || game.isGameOver()) {
             System.out.print(player.getName() + " player action: move " + from + " " + to);
             if (promote) {
                 System.out.println(" promote");
@@ -60,14 +61,14 @@ public class FileHelper implements GameHelper {
 
     @Override
     public void dropMade(Player player, Piece piece, String address) {
-        if (currentMove == moves - 1 || game.isGameOver()) {
+        if (currentMove == moves || game.isGameOver()) {
             System.out.println(player.getName() + " player action: drop " + piece.toString() + " " + address);
         }
     }
 
     @Override
     public void inCheck(Player player, List<String> strats) {
-        if (currentMove == moves - 1 || game.isGameOver()) {
+        if (currentMove == moves || game.isGameOver()) {
             System.out.println(player.getName() + " player is in check!");
             System.out.println("Available moves: ");
             strats.sort(String::compareToIgnoreCase);
@@ -89,7 +90,8 @@ public class FileHelper implements GameHelper {
 
     @Override
     public void getTurn(Player player){
-        if (currentMove == moves - 1 || game.isGameOver()) {
+        currentMove++;
+        if (currentMove == moves+1 && !game.isGameOver()) {
             System.out.println(player.getName() + "> ");
         }
     }

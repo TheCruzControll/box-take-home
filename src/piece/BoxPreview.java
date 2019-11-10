@@ -45,9 +45,12 @@ public class BoxPreview extends Piece{
         }
 
         if(board.getPromoteRow(player.getDirection()) == row)return false;
+        int index = player.getPieceIndex(getSymbol());
+        Piece p = player.getPiece(getSymbol());
         board.placePiece(this, row, col);
-        boolean isCheckMate = board.isCheckMate(opponent);
+        boolean checkMate = board.isCheckMate(player);
         board.removePiece(row, col);
-        return !isCheckMate;
+        if (p != null) player.addCapturedPiece(p, index);
+        return !checkMate;
     }
 }

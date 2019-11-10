@@ -25,6 +25,7 @@ public class FileMode extends Game {
             upper.addCapturedPiece(piece);
         }
         for(String symbol : lowerCaptures){
+            if(symbol.equals(""))continue;
             Piece piece = PieceFactory.makePiece(symbol, upper, lower);
             lower.addCapturedPiece(piece);
         }

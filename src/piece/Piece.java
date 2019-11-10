@@ -15,7 +15,7 @@ public abstract class Piece {
 
     public Piece(char symbol, Player player){
         this.player = player;
-        this.symbol = symbol;
+        this.symbol = player.getDirection() == Direction.DOWN ? Character.toUpperCase(symbol) : Character.toLowerCase(symbol);
         this.direction = player.getDirection();
         this.promoted = false;
     }
@@ -63,7 +63,7 @@ public abstract class Piece {
         Set<Coordinate> moves = new HashSet<>();
         for(int endRow = 0; endRow < board.getBoardSize(); endRow++){
             for(int endCol = 0; endCol < board.getBoardSize(); endCol++){
-                if(isValidMove(start, end, endRow, endCol, board)){
+                if(isValidMove(start, endRow, end, endCol, board)){
                     moves.add(new Coordinate(endRow, endCol));
                 }
             }

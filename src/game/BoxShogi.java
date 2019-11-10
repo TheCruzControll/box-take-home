@@ -40,12 +40,7 @@ public class BoxShogi {
         if(args[0].equals( "-i")){
             runInteractiveMode();
         }else if(args[0].equals("-f")){
-//            File directory = new File(args[1]);
-//            File[] contents = directory.listFiles();
-//            for(File f : contents){
-//                System.out.println(f.getName());
-//            }
-            runFileMode("../testcases/"+args[1]);
+            runFileMode("testcases/" + args[1]);
         }else{
             System.out.println(args[0]);
             System.out.println("illegal argument");

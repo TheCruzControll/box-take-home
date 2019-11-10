@@ -54,7 +54,7 @@ public class Board {
                 Piece piece = getPiece(row, col);
                 if(isOccupied(row, col) && piece.getPlayer() == getOpponent(currentPlayer)){
                     Coordinate driveLoc = getDriveLocation(currentPlayer);
-                    if(piece.isValidMove(row, col, driveLoc.getRow(), driveLoc.getCol(), this)){
+                    if(piece.isValidMove(row, driveLoc.getRow(), col, driveLoc.getCol(), this)){
                         return true;
                     }
                 }
@@ -83,7 +83,7 @@ public class Board {
                 Piece piece = getPiece(row, col);
                 if(isOccupied(row, col) && piece.getPlayer() == currentPlayer){
                     for(Coordinate move : piece.validMoves(row, col, this)){
-                        if(moveUncheck(row, col, move.getRow(), move.getCol(), currentPlayer)){
+                        if(moveUncheck(row, move.getRow(), col, move.getCol(), currentPlayer)){
                             strats.add(Utils.moveToString(row, move.getRow(), col, move.getCol(), this));
                         }
                     }
@@ -92,7 +92,8 @@ public class Board {
         }
 
         //Try every possible drop
-        for(Piece piece : currentPlayer.getCapturedPieces()){
+        List<Piece> captured = new ArrayList<>(currentPlayer.getCapturedPieces());
+        for(Piece piece : captured){
             for(int row = 0; row < getBoardSize(); row++){
                 for(int col = 0; col < getBoardSize(); col++){
                     if(dropUncheck(piece, row, col, currentPlayer)){
@@ -127,6 +128,7 @@ public class Board {
     }
 
     private boolean dropUncheck(Piece piece, int row, int col, Player currentPlayer){
+        if(isOccupied(row,col));
         if(!piece.isLegalDrop(row, col, this))return false;
         placePiece(piece, row, col);
         boolean isInCheck = isInCheck(currentPlayer);

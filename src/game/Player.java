@@ -5,7 +5,7 @@ import utils.Direction;
 import java.util.*;
 
 public class Player {
-    private static String name;
+    private String name;
     private final boolean isUpper;
     private final List<Piece> capturedPieces;
     private final Direction direction;
@@ -13,13 +13,13 @@ public class Player {
 
     public Player(boolean isUpper){
         this.isUpper = isUpper;
-        capturedPieces = new LinkedList<Piece>();
+        this.capturedPieces = new LinkedList<Piece>();
         if(isUpper){
-            direction = Direction.DOWN;
-            name = "UPPER";
+            this.direction = Direction.DOWN;
+            this.name = "UPPER";
         }else{
-            direction = Direction.UP;
-            name = "lower";
+            this.direction = Direction.UP;
+            this.name = "lower";
         }
     }
 
@@ -61,7 +61,7 @@ public class Player {
         return null;
     }
 
-    public static String getName() {
+    public String getName() {
         return name;
     }
 
