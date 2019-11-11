@@ -8,7 +8,7 @@
     1. Run BoxShogi.java with your specified command line arguments. 
     
     - Note: To run in file mode, your command line argument should be in the syntax of `testcases/"YOUR TEST CASE HERE"
-    `. Program assumes the runnable file is in the same directory as the test cases and the test runner
+    `. 
  ---
 ## Take Aways
  - Study better design patterns and be more consistent from the get go with method parameters when dealing with a large projext
@@ -19,14 +19,14 @@
 ## Game Design
 
 ### BoxShogi.java
-`BoxShogi.java` is the main driver for the project. It holds the main method and handling user inputs and creating an instances of a game depending on the command line flags.
+`BoxShogi.java` file is the main driver for the project. It holds the main method, handles user inputs and creates instances the game depending on the command line flag.
 
  ---
 ### Board.java
-The `board.java` represents the board on which the game will be played on.
+The `board.java` file represents the board on which the game will be played on.
 #### Design Decisions
-The board holds the state of the players, their pieces, and the relationship between them and their opponent. 
-Although it seems more intuitive to have the players hold the state of themselves and their pieces, i ran into a brick wall when trying to access an opponents piece. 
+The board holds the state of the players, their pieces, and the relationship between them and their opponent.  
+Although it seems more intuitive to have the players hold the state of themselves and their pieces, i ran into a brick wall when trying to access an opponents piece.  
 This lead me down the road of having most of the state held by the board itself, using the pieces as somewhat of a secondary state holder knowing its owner and its own valid moves and using the player just to hold certain data such as captured pieces.  
 This design decision made it much easier to check for checks and checkmates as I have access to every piece and their owner. 
 
@@ -44,9 +44,9 @@ GameHelper and its children classes, FileHelper and InteractiveHelper, use an `o
 
  ---
 ### Piece.java
-`Piece.java` and its children represent the possible BoxShogi Pieces. Each piece can check if a move or a drop is valid but cannot actually perform the action of dropping of moving. 
+`Piece.java` and its children represent the possible BoxShogi Pieces. Each piece can check if a move or a drop is valid but cannot actually perform the action of dropping or moving. 
 #### Design Decisions
-The pieces by far were the easiest to design and implement. I used a `template method` design patterns to build the overall structure of each piece. All pieces build off of the Abstract class `Piece.java` Override the necessary methods to fulfil the correct functionality.  
+The pieces by far were the easiest to design and implement. I used a `template method` design pattern to build the overall structure of each piece. All pieces build off of the Abstract class `Piece.java` and override the necessary methods to fulfil the correct functionality.  
 I chose to separate each of the Piece's moves into a separate class so that they can all access each others move methods. This structure made it much easier to check the moves for Promoted pieces.   
 I also included a PieceFactory class that uses a `factory method` design pattern to create pieces based on the symbol given. This was made for initializing the boards of each test case and was used in conjunction with the parseTestCase util.
 
