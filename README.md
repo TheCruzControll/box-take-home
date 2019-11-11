@@ -8,7 +8,7 @@
     1. Run BoxShogi.java with your specified command line arguments. 
     
     - Note: To run in file mode, your command line argument should be in the syntax of `testcases/"YOUR TEST CASE HERE"
-    `. Program assumes the runnable file is in the same directory as the test cases and the test runner
+    `. 
  ---
 ## Take Aways
  - Study better design patterns and be more consistent from the get go with method parameters when dealing with a large projext
