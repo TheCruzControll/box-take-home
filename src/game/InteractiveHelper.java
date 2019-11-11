@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Helper class that outputs all information out to the user.
+ * Helper class that outputs all information out to the user in interactive mode.
  */
 public class InteractiveHelper implements GameHelper{
 

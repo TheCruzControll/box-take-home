@@ -1,5 +1,9 @@
 package utils;
 
+/**
+ * Coordinate class to represent a plethora of actions regarding the board.
+ *
+ */
 public class Coordinate {
     private int row;
     private int col;

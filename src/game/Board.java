@@ -135,9 +135,8 @@ public class Board {
      * @return true if it is possible to uncheck the current player with the move specified.
      */
     private boolean moveUncheck(int startRow, int endRow, int startCol, int endCol, Player currentPlayer){
-        Piece piece = getPiece(startRow, startCol);
         //only gets called when there's a piece so no need to check for null piece
-        if(!piece.isValidMove(startRow, endRow, startCol, endCol, this))return false;
+        if(!isValidMove(startRow, endRow, startCol, endCol, false, currentPlayer))return false;
 
         Piece startPiece = getPiece(startRow, startCol);
         Piece endPiece = getPiece(endRow, endCol);
@@ -148,6 +147,7 @@ public class Board {
         placePiece(startPiece, endRow, endCol);
         boolean isInCheck = isInCheck(currentPlayer);
 
+        //undo move
         placePiece(startPiece, startRow, startCol);
         placePiece(endPiece, endRow, endCol);
 
@@ -163,8 +163,11 @@ public class Board {
      * @return : True if it is possible to drop at a specific coordinate
      */
     private boolean dropUncheck(Piece piece, int row, int col, Player currentPlayer){
+        //can't drop on occupied spot
         if(isOccupied(row,col))return false;
         if(!piece.isLegalDrop(row, col, this))return false;
+
+        //try the drop to see if it results in a check
         placePiece(piece, row, col);
         boolean isInCheck = isInCheck(currentPlayer);
         removePiece(row, col);
@@ -191,6 +194,7 @@ public class Board {
      * @return true : if a legal move
      */
     public boolean move(String from, String to, boolean promote, Player currentPlayer){
+        //If any of the addresses dont match the address pattern return false
         String addressPattern = "[a-e][1-5]";
         if(!from.matches(addressPattern) || !to.matches(addressPattern))return false;
         Coordinate fromCoordinate = Utils.addressToIndex(from, this);
@@ -200,17 +204,26 @@ public class Board {
         int endRow = toCoordinate.getRow();
         int endCol = toCoordinate.getCol();
 
+        //If it's not a valid move return false
         if(!isValidMove(startRow, endRow, startCol, endCol, promote, currentPlayer))return false;
         Piece piece = getPiece(startRow, startCol);
         Piece endPiece = getPiece(endRow, endCol);
+
+        //make move
         removePiece(startRow,startCol);
         placePiece(piece,endRow,endCol);
+
+        //always try to promote if its a box preview
         if (piece instanceof BoxPreview) piece.promote(startRow, endRow, this);
+
+        //if the move puts current player in check. It is an illegal move
         if(isInCheck(currentPlayer)){
             removePiece(endRow,endCol);
             placePiece(piece, startRow, startCol);
             return false;
         }
+
+        //If there was a piece at the end address. Add it to captured pieces.
         if(endPiece != null){
             endPiece.capture(currentPlayer);
             currentPlayer.addCapturedPiece(endPiece);
@@ -218,18 +231,38 @@ public class Board {
         return true;
     }
 
+    /**
+     * Drops the specified piece in the appropriate coordinate
+     * @param piece : piece to drop
+     * @param to : coordinate to drop to in string format
+     * @return true if valid drop
+     */
     public boolean drop(Piece piece, String to){
         String addressPattern = "[a-e][1-5]";
+
         if(!to.matches(addressPattern))return false;
         Coordinate toCoordinate = Utils.addressToIndex(to, this);
         int row = toCoordinate.getRow();
         int col = toCoordinate.getCol();
+
+        //can't drop on an occupied space
         if(getPiece(row, col) != null)return false;
         if(!piece.isLegalDrop(row, col, this))return false;
         placePiece(piece, row, col);
         return true;
     }
 
+    /**
+     * helper method to check if a move is valid without knowing
+     * if there is a piece or not
+     * @param startRow : start row of move
+     * @param endRow : end row of move
+     * @param startCol : start column of move
+     * @param endCol : end column of move
+     * @param promote : true if moving piece is asked to be promoted
+     * @param currentPlayer : current player that wants to be promoted
+     * @return true if valid move
+     */
     private boolean isValidMove(int startRow, int endRow, int startCol, int endCol, boolean promote, Player currentPlayer){
         Piece piece = getPiece(startRow, startCol);
         if(piece == null || piece.getPlayer() != currentPlayer || !piece.isValidMove(startRow , endRow, startCol, endCol, this))return false;
@@ -246,7 +279,13 @@ public class Board {
         board[row][col] = null;
     }
 
-    public void updateDriveLocations(Piece piece, int row, int col){
+    /**
+     * updates location of BoxDrive piece to specified row and col
+     * @param piece : box drive
+     * @param row : destination row
+     * @param col : destination column
+     */
+    private void updateDriveLocations(Piece piece, int row, int col){
         Player player = piece.getPlayer();
         Coordinate location = driveLocations.containsKey(player) ? driveLocations.get(player) : new Coordinate();
         location.setCol(col);

@@ -7,7 +7,12 @@ import java.io.*;
 import java.util.*;
 
 public class Utils {
-
+    /**
+     * Converts a string address to a coordinate on the board
+     * @param address
+     * @param board
+     * @return
+     */
     public static Coordinate addressToIndex(String address, Board board){
         int row = Integer.valueOf(address.substring(1,2));
         char col = address.charAt(0);
@@ -15,18 +20,45 @@ public class Utils {
         return index;
     }
 
+    /**
+     * Converts an integer representation of a row and col and converts it
+     * to a address string using the syntax specified by BoxShogi
+     * @param row
+     * @param col
+     * @param board
+     * @return
+     */
     public static String indexToAddress(int row, int col, Board board){
         char r = (char)(((int)'a') + col);
         int c = board.getBoardSize() - row;
         return r + String.valueOf(c);
     }
 
+    /**
+     * Converts an integer representation of a move into a string version of a move.
+     * used for the interface
+     * @param startRow
+     * @param endRow
+     * @param startCol
+     * @param endCol
+     * @param board
+     * @return
+     */
     public static String moveToString(int startRow, int endRow, int startCol, int endCol, Board board){
         String from = indexToAddress(startRow, startCol, board);
         String to = indexToAddress(endRow, endCol, board);
         return "move " + from + " " + to;
     }
 
+    /**
+     * Converts an integer representation of a move into a string version of a move.
+     * used for the interface
+     * @param piece
+     * @param endRow
+     * @param endCol
+     * @param board
+     * @return
+     */
     public static String dropToString(Piece piece, int endRow, int endCol, Board board){
         return "drop " + Character.toLowerCase(piece.getSymbol()) + " " + indexToAddress(endRow, endCol, board);
     }

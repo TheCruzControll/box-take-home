@@ -4,6 +4,9 @@ import piece.Piece;
 
 import java.util.List;
 
+/**
+ * Output helper that only outputs the last move.
+ */
 public class FileHelper implements GameHelper {
     private int moves;
     private int currentMove;

@@ -3,6 +3,10 @@ package piece;
 import game.Board;
 import utils.Direction;
 
+/**
+ * Class containing all of the move functionality of the pieces.
+ * Class was made to have the move methods be usable across all of the pieces
+ */
 public class MoveChecker {
     public static boolean BoxDrive(int startRow, int endRow, int startCol, int endCol){
         return Math.abs(endRow-startRow) <= 1 && Math.abs(endCol-startCol) <= 1;

@@ -6,8 +6,12 @@ import utils.Coordinate;
 import utils.Utils;
 import utils.Utils.*;
 
+/**
+ * Implementation of the BoxShogi game in file mode
+ */
 public class FileMode extends Game {
     private GameHelper helper;
+
 
     public FileMode(TestCase testCase){
         super();
@@ -15,16 +19,22 @@ public class FileMode extends Game {
         List<InitialPosition> init = testCase.initialPieces;
         List<String> upperCaptures = testCase.upperCaptures;
         List<String> lowerCaptures = testCase.lowerCaptures;
+
+        //place initial pieces
         for(InitialPosition ip : init){
             Piece piece = PieceFactory.makePiece(ip.piece, upper, lower);
             Coordinate coordinate = Utils.addressToIndex(ip.position, board);
             board.placePiece(piece, coordinate.getRow(), coordinate.getCol());
         }
+
+        //get UPPER player captures
         for(String symbol : upperCaptures){
             if(symbol.equals(""))continue;
             Piece piece = PieceFactory.makePiece(symbol, upper, lower);
             upper.addCapturedPiece(piece);
         }
+
+        //get lower player captures
         for(String symbol : lowerCaptures){
             if(symbol.equals(""))continue;
             Piece piece = PieceFactory.makePiece(symbol, upper, lower);
