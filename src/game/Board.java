@@ -19,6 +19,8 @@ public class Board {
     private static final int BOARD_SIZE = 5;
     private static final int UPPER_PROMOTION_ROW = 0;
     private static final int LOWER_PROMOTION_ROW = BOARD_SIZE-1;
+
+
     private final Map<Player, Coordinate> driveLocations;
     private Piece[][] board;
 
@@ -28,10 +30,19 @@ public class Board {
     	this.driveLocations = new HashMap<>();
     }
 
+    /**
+     * Get board size
+     * @return board size
+     */
     public int getBoardSize(){
         return BOARD_SIZE;
     }
 
+    /**
+     *
+     * @param direction : UP or DOWN
+     * @return index of promotion row based on direction
+     */
     public int getPromoteRow(Direction direction) {
         if (direction == Direction.UP) return UPPER_PROMOTION_ROW;
         else return LOWER_PROMOTION_ROW;
@@ -44,8 +55,8 @@ public class Board {
     public Piece getPiece(int row, int col){return board[row][col];}
 
     /**
-     * Goes to every single opponent piece and sees if theres a possible
-     * move to get the drive.
+     * Goes to every single opponent piece and sees if there's a possible
+     * move to capture the drive.
      * @param currentPlayer : the player that is in check
      * @return true if currentPlayer is in check
      */
@@ -64,9 +75,8 @@ public class Board {
         return false;
     }
 
-
     /**
-     *
+     * Check to see if the current player is in checkmate
      * @param currentPlayer : Player who is in checkmate
      * @return true if current player is in checkmate
      */
@@ -76,8 +86,15 @@ public class Board {
         return strats.isEmpty();
     }
 
+    /**
+     * Goes through every possible move and drop the current player has
+     * to uncheck itself
+     * @param currentPlayer : player that is trying to uncheck
+     * @return ArrayList of possible moves in string format
+     */
     public ArrayList<String> unCheckPossibilities(Player currentPlayer){
-        ArrayList<String> strats = new ArrayList<>();
+        ArrayList<String> strategies = new ArrayList<>();
+
         //Try every move of each piece the currentPlayer has
         for(int row = 0; row < getBoardSize(); row++){
             for(int col = 0; col < getBoardSize(); col++){
@@ -85,7 +102,7 @@ public class Board {
                 if(isOccupied(row, col) && piece.getPlayer() == currentPlayer){
                     for(Coordinate move : piece.validMoves(row, col, this)){
                         if(moveUncheck(row, move.getRow(), col, move.getCol(), currentPlayer)){
-                            strats.add(Utils.moveToString(row, move.getRow(), col, move.getCol(), this));
+                            strategies.add(Utils.moveToString(row, move.getRow(), col, move.getCol(), this));
                         }
                     }
                 }
@@ -99,16 +116,24 @@ public class Board {
                 for(int col = 0; col < getBoardSize(); col++){
                     boolean uncheck = dropUncheck(piece, row, col, currentPlayer);
                     if(uncheck){
-                        strats.add(Utils.dropToString(piece, row, col, this));
+                        strategies.add(Utils.dropToString(piece, row, col, this));
                     }
                 }
             }
         }
-        return strats;
+        return strategies;
     }
 
 
-
+    /**
+     * Checks if it is possible to uncheck the current player with the move specified.
+     * @param startRow : start row index for move
+     * @param endRow : end row index for move
+     * @param startCol : start column index for move
+     * @param endCol : end column index for move
+     * @param currentPlayer : player that wants to uncheck
+     * @return true if it is possible to uncheck the current player with the move specified.
+     */
     private boolean moveUncheck(int startRow, int endRow, int startCol, int endCol, Player currentPlayer){
         Piece piece = getPiece(startRow, startCol);
         //only gets called when there's a piece so no need to check for null piece
@@ -129,6 +154,14 @@ public class Board {
         return !isInCheck;
     }
 
+    /**
+     *
+     * @param piece : piece to drop
+     * @param row : row to drop to
+     * @param col : column to drop to
+     * @param currentPlayer : player that wants to drop
+     * @return : True if it is possible to drop at a specific coordinate
+     */
     private boolean dropUncheck(Piece piece, int row, int col, Player currentPlayer){
         if(isOccupied(row,col))return false;
         if(!piece.isLegalDrop(row, col, this))return false;
@@ -138,11 +171,25 @@ public class Board {
         return !isInCheck;
     }
 
+    /**
+     * Place a piece without check.
+     * @param piece : piece to be placed
+     * @param row : row to be placed in
+     * @param col : col to be placed in
+     */
     public void placePiece(Piece piece, int row, int col){
         if(piece instanceof BoxDrive) updateDriveLocations(piece, row, col);
         board[row][col] = piece;
     }
 
+    /**
+     * Moves the piece as long as it is not an illegal move.
+     * @param from : start coordinate of move in string form
+     * @param to : end coordinate of move in string form
+     * @param promote : true if current piece is promoted
+     * @param currentPlayer : player moving the piece
+     * @return true : if a legal move
+     */
     public boolean move(String from, String to, boolean promote, Player currentPlayer){
         String addressPattern = "[a-e][1-5]";
         if(!from.matches(addressPattern) || !to.matches(addressPattern))return false;
@@ -171,7 +218,7 @@ public class Board {
         return true;
     }
 
-    public boolean drop(Piece piece, String to, Player currentPlayer){
+    public boolean drop(Piece piece, String to){
         String addressPattern = "[a-e][1-5]";
         if(!to.matches(addressPattern))return false;
         Coordinate toCoordinate = Utils.addressToIndex(to, this);
@@ -216,10 +263,6 @@ public class Board {
 
     public Coordinate getDriveLocation(Player currentPlayer ){
         return driveLocations.get(currentPlayer);
-    }
-
-    public Coordinate getOpponentDriveLocation(Player currentPlayer){
-        return driveLocations.get(getOpponent(currentPlayer));
     }
 
     /* Print board */

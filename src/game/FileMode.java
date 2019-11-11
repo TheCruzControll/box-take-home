@@ -83,7 +83,7 @@ public class FileMode extends Game {
             gameOver = true;
             isLegal = false;
         }else{
-            isLegal = board.drop(currPiece, addr, currentPlayer);
+            isLegal = board.drop(currPiece, addr);
         }
         if(!isLegal && currPiece != null){
             currentPlayer.addCapturedPiece(currPiece, index);
